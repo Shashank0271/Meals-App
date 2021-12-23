@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/meals_details_screen.dart';
-import 'package:meals_app/screens/meals_details_screen.dart';
 
 class MealItem extends StatelessWidget {
   final String id;
@@ -95,7 +94,7 @@ class MealItem extends StatelessWidget {
                       overflow: TextOverflow.fade,
                     ),
                   ),
-                )
+                ),
               ],
             ),
             Padding(
