@@ -3,30 +3,43 @@ import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 import '../dummy_data.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
+class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';
-  // final String categoryId;
-  // final String categoryTitle;
-  //
-  // const CategoryMealsScreen(
-  //     {Key? key, required this.categoryId, required this.categoryTitle})
-  //     : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<CategoryMealsScreen> createState() => _CategoryMealsScreenState();
+}
+
+class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
+  late List<Meal> displayedMeals;
+  String? categoryTitle;
+
+  @override
+  void didChangeDependencies() {
     final routeArgs =
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     final categoryId = routeArgs['id'];
-    final categoryTitle = routeArgs['title'];
-    final categoryMeals = DUMMY_MEALS
+    categoryTitle = routeArgs['title'];
+    displayedMeals = DUMMY_MEALS
         .where((element) => element.categories.contains(categoryId))
         .toList();
+    super.didChangeDependencies();
+  }
+
+  void _removeMeal(String mealId) {
+    setState(() {
+      displayedMeals.removeWhere((element) => element.id == mealId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(categoryTitle!)),
+      appBar: AppBar(title: Text(categoryTitle ?? "")),
       body: ListView.builder(
-          itemCount: categoryMeals.length,
+          itemCount: displayedMeals.length,
           itemBuilder: (context, index) {
-            Meal meal = categoryMeals[index];
+            Meal meal = displayedMeals[index];
             return MealItem(
               title: meal.title,
               imageUrl: meal.imageUrl,
@@ -34,6 +47,7 @@ class CategoryMealsScreen extends StatelessWidget {
               duration: meal.duration,
               affordability: meal.affordability,
               id: meal.id,
+              removeItem: _removeMeal,
             );
           }),
     );
