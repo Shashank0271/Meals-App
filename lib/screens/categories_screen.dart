@@ -10,7 +10,7 @@ class CategoriesScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView(
-        physics: const BouncingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         children: DUMMY_CATEGORIES
             .map((cat) => CategoryItem(
                   title: cat.title,
